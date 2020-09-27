@@ -1,7 +1,7 @@
 package me.sirikon.buletina.controllers;
 
 import io.javalin.http.Context;
-import me.sirikon.buletina.services.Barker;
+import me.sirikon.buletina.services.TemplateService;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -9,15 +9,15 @@ import javax.inject.Singleton;
 @Singleton
 public class HomeController {
 
-  private final Barker barker;
+  private final TemplateService templateService;
 
   @Inject
-  public HomeController(final Barker barker) {
-    this.barker = barker;
+  public HomeController(final TemplateService templateService) {
+    this.templateService = templateService;
   }
 
   public void index(final Context ctx) {
-    ctx.result(barker.bark());
+    ctx.html(templateService.index("YolO!"));
   }
 
 }
