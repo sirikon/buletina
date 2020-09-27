@@ -4,12 +4,10 @@ import com.github.mustachejava.DefaultMustacheFactory;
 import com.github.mustachejava.Mustache;
 
 import javax.inject.Inject;
-import javax.inject.Singleton;
 import java.io.InputStreamReader;
 import java.io.StringWriter;
 import java.util.Map;
 
-@Singleton
 public class TemplateService {
 
   private final Mustache indexTemplate;
