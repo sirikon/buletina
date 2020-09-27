@@ -4,7 +4,9 @@ import io.javalin.http.Context;
 import me.sirikon.buletina.services.TemplateService;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
+@Singleton
 public class HomeController {
 
   private final TemplateService templateService;
