@@ -5,6 +5,7 @@ import me.sirikon.buletina.services.TemplateService;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import java.util.Map;
 
 @Singleton
 public class HomeController {
@@ -17,7 +18,7 @@ public class HomeController {
   }
 
   public void index(final Context ctx) {
-    ctx.html(templateService.index("YolO!"));
+    ctx.html(templateService.render("index.html", Map.of("message", "Yolo!")));
   }
 
 }
