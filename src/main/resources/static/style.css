@@ -1,0 +1,25 @@
+body {
+    background-color: whitesmoke;
+}
+
+.container {
+    max-width: 800px;
+    margin: auto;
+}
+
+.subscribe-form {
+    text-align: center;
+}
+
+.subscribe-form input[name='accept'] {
+    display: none;
+}
+
+.subscribe-form .note {
+    font-size: .7em;
+}
+
+.subscribe-form .error {
+    font-size: .8em;
+    color: red;
+}

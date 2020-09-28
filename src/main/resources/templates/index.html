@@ -1,1 +1,25 @@
-<h1>{{ message }}</h1>
+<html>
+<head>
+    <title>Buletina</title>
+    <meta charset="utf8">
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<div class="container">
+    <h1>Subscribe to My Thing</h1>
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque at tellus id tortor efficitur pharetra nec a tortor.</p>
+    <p>Quisque nec efficitur neque. Interdum et malesuada fames ac ante ipsum primis in faucibus. Etiam aliquam dui non lorem mollis ullamcorper. Maecenas fermentum lobortis maximus. Ut fermentum vitae leo nec elementum.</p>
+
+    <form class="subscribe-form" action="/subscribe" method="POST">
+        <input type="text" name="email" value="{{ email }}">
+        <input type="checkbox" name="accept">
+        <button>Subscribe</button>
+        <p class="error">{{ email_error }}</p>
+        <p class="note">By subscribing you accept our <a href="#">terms and conditions</a>,<br>which are really short 🙂</p>
+        <p class="note">You'll receive an email to confirm the subscription.</p>
+    </form>
+</div>
+
+</body>
+</html>

@@ -18,7 +18,7 @@ public class HomeController {
   }
 
   public void index(final Context ctx) {
-    ctx.html(templateService.render("index.html", Map.of("message", "Yolo!")));
+    ctx.html(templateService.render("index.html", Map.of("email", "example@example.com")));
   }
 
 }
