@@ -8,6 +8,7 @@ import javax.inject.Singleton;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.StringWriter;
 import java.util.HashMap;
@@ -28,21 +29,24 @@ public class TemplateService {
     templates = new HashMap<>();
     final var mustacheFactory = new DefaultMustacheFactory();
     AVAILABLE_TEMPLATES.forEach((t) -> {
+      final InputStream tplStream;
+
       final var possibleFileInDisk = new File("templates/" + t);
       if (possibleFileInDisk.exists()) {
         try {
-          final var tplStream = new FileInputStream(possibleFileInDisk);
-          templates.put(t, mustacheFactory.compile(new InputStreamReader(tplStream), t));
+          tplStream = new FileInputStream(possibleFileInDisk);
         } catch (FileNotFoundException e) {
           throw new RuntimeException(t);
         }
       } else {
-        final var tplStream = getClass().getClassLoader().getResourceAsStream("templates/" + t);
-        if (tplStream == null) {
-          throw new RuntimeException("Template '" + t + "' not found");
-        }
-        templates.put(t, mustacheFactory.compile(new InputStreamReader(tplStream), t));
+        tplStream = getClass().getClassLoader().getResourceAsStream("templates/" + t);
       }
+
+      if (tplStream == null) {
+        throw new RuntimeException("Template '" + t + "' not found");
+      }
+
+      templates.put(t, mustacheFactory.compile(new InputStreamReader(tplStream), t));
     });
   }
 
