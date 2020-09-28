@@ -56,41 +56,4 @@ public class TemplateService {
     return writer.toString();
   }
 
-//  private List<String> getAvailableTemplates() {
-//    try {
-//      return getResourceFiles("templates");
-//    } catch (final Throwable t) {
-//      throw new RuntimeException(t);
-//    }
-//  }
-//
-//  private List<String> getResourceFiles(final String path) throws IOException {
-//    List<String> filenames = new ArrayList<>();
-//
-//    InputStream in = getResourceAsStream(path);
-//    BufferedReader br = new BufferedReader(new InputStreamReader(in));
-//
-//    String resource;
-//    while ((resource = br.readLine()) != null) {
-//      if (!resource.contains(".")) {
-//        final var parent = resource;
-//        filenames.addAll(getResourceFiles(path + "/" + resource).stream()
-//            .map((r) -> parent + "/" + r).collect(Collectors.toList()));
-//        continue;
-//      }
-//      filenames.add(resource);
-//    }
-//
-//    return filenames;
-//  }
-//
-//  private InputStream getResourceAsStream(final String resource) {
-//    final InputStream in = getContextClassLoader().getResourceAsStream(resource);
-//    return in == null ? getClass().getResourceAsStream(resource) : in;
-//  }
-//
-//  private ClassLoader getContextClassLoader() {
-//    return Thread.currentThread().getContextClassLoader();
-//  }
-
 }
