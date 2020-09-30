@@ -32,9 +32,7 @@ public class MainController {
     this.templateService = templateService;
   }
 
-  public void home(final Context ctx) {
-    renderHome(ctx, "", "");
-  }
+  public void home(final Context ctx) { renderHome(ctx, "", ""); }
 
   public void subscribe(final Context ctx) {
     final var emailValidator = ctx.formParam("email", String.class)
