@@ -12,6 +12,7 @@ import static io.javalin.apibuilder.ApiBuilder.get;
 import static io.javalin.apibuilder.ApiBuilder.post;
 
 public class Buletina {
+
     public static void main(final String[] args) {
         final var injector = Guice.createInjector(new MainModule());
 
@@ -23,10 +24,15 @@ public class Buletina {
         });
 
         app.routes(() -> {
-            get("/", ctx -> injector.getInstance(MainController.class).home(ctx));
-            post("/subscribe", ctx -> injector.getInstance(MainController.class).subscribe(ctx));
+            get("/",
+                ctx -> injector.getInstance(MainController.class).home(ctx));
+            post("/subscribe",
+                ctx -> injector.getInstance(MainController.class).subscribe(ctx));
+            get("/confirm_subscription/:token",
+                ctx -> injector.getInstance(MainController.class).confirmSubscription(ctx));
         });
 
         app.start(7000);
     }
+
 }
