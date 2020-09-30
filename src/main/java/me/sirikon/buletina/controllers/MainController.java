@@ -40,7 +40,7 @@ public class MainController {
         .check(MainController::isValidEmail, "Email is invalid");
 
     if (emailValidator.hasError()) {
-      renderHome(ctx, emailValidator.getValue(), emailValidator.errors().get("email").get(0));
+      renderHome(ctx, emailValidator.getValue(), emailValidator.errors().get(emailValidator.getKey()).get(0));
       return;
     }
 
