@@ -14,7 +14,6 @@ import static io.javalin.apibuilder.ApiBuilder.post;
 public class Buletina {
 
     public static void main(final String[] args) {
-        final var injector = Guice.createInjector(new MainModule());
 
         final var app = Javalin.create((c) -> {
             if (new File("./static").isDirectory()) {
@@ -23,13 +22,12 @@ public class Buletina {
             c.addStaticFiles("/", "static", Location.CLASSPATH);
         });
 
+        final var injector = Guice.createInjector(new MainModule());
+        final var mainController = injector.getInstance(MainController.class);
         app.routes(() -> {
-            get("/",
-                ctx -> injector.getInstance(MainController.class).home(ctx));
-            post("/subscribe",
-                ctx -> injector.getInstance(MainController.class).subscribe(ctx));
-            get("/confirm_subscription/:token",
-                ctx -> injector.getInstance(MainController.class).confirmSubscription(ctx));
+            get("/", mainController::home);
+            post("/subscribe", mainController::subscribe);
+            get("/confirm_subscription/:token", mainController::confirmSubscription);
         });
 
         app.start(7000);
