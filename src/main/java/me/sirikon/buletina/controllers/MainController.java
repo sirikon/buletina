@@ -53,14 +53,16 @@ public class MainController {
 
     final var email = emailValidator.get();
     final var subscriptionToken = createSubscriptionToken(email);
-    final var confirmationUrl = "http://localhost:7000/confirm_subscription/" + urlEncode(subscriptionToken);
-    ctx.result(confirmationUrl);
+    final var confirmationUrl = buildConfirmationUrl(subscriptionToken);
+    System.out.println(confirmationUrl);
+    renderVerificationEmailSent(ctx);
   }
 
   public void confirmSubscription(final Context ctx) {
     final var token = urlDecode(ctx.pathParam("token"));
     final var email = verifySubscriptionToken(token);
-    ctx.result(email);
+    System.out.println(email);
+    renderSubscriptionConfirmed(ctx);
   }
 
   private void renderHome(final Context ctx, final String email, final String emailError) {
@@ -68,6 +70,14 @@ public class MainController {
         "email", email,
         "email_error", emailError
     )));
+  }
+
+  private void renderVerificationEmailSent(final Context ctx) {
+    ctx.html(templateService.render("verification_email_sent.html", null));
+  }
+
+  private void renderSubscriptionConfirmed(final Context ctx) {
+    ctx.html(templateService.render("subscription_confirmed.html", null));
   }
 
   private String createSubscriptionToken(final String email) {
@@ -86,6 +96,10 @@ public class MainController {
 
   private Algorithm getJWTAlgorithm() {
     return Algorithm.HMAC512(configuration.getJwtSecret());
+  }
+
+  private String buildConfirmationUrl(final String token) {
+    return configuration.getBaseURL() + "/confirm_subscription/" + urlEncode(token);
   }
 
   private static boolean isValidEmail(final String email) {

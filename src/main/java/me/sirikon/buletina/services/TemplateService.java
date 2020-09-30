@@ -19,7 +19,9 @@ import java.util.Map;
 public class TemplateService {
 
   private static final List<String> AVAILABLE_TEMPLATES = List.of(
-      "index.html"
+      "index.html",
+      "verification_email_sent.html",
+      "subscription_confirmed.html"
   );
 
   private final Map<String, Mustache> templates;

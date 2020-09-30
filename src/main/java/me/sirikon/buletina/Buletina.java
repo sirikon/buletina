@@ -3,6 +3,7 @@ package me.sirikon.buletina;
 import com.google.inject.Guice;
 import io.javalin.Javalin;
 import io.javalin.http.staticfiles.Location;
+import me.sirikon.buletina.configuration.Configuration;
 import me.sirikon.buletina.controllers.MainController;
 import me.sirikon.buletina.di.MainModule;
 
@@ -14,6 +15,8 @@ import static io.javalin.apibuilder.ApiBuilder.post;
 public class Buletina {
 
     public static void main(final String[] args) {
+        final var injector = Guice.createInjector(new MainModule());
+        final var configuration = injector.getInstance(Configuration.class);
 
         final var app = Javalin.create((c) -> {
             if (new File("./static").isDirectory()) {
@@ -22,7 +25,7 @@ public class Buletina {
             c.addStaticFiles("/", "static", Location.CLASSPATH);
         });
 
-        final var injector = Guice.createInjector(new MainModule());
+
         final var mainController = injector.getInstance(MainController.class);
         app.routes(() -> {
             get("/", mainController::home);
@@ -30,7 +33,7 @@ public class Buletina {
             get("/confirm_subscription/:token", mainController::confirmSubscription);
         });
 
-        app.start(7000);
+        app.start(configuration.getPort());
     }
 
 }

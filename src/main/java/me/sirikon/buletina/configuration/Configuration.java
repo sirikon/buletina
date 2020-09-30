@@ -7,20 +7,27 @@ import javax.inject.Singleton;
 @Singleton
 public class Configuration {
 
+  private static final String ENV_KEY_PREFIX = "BULETINA_";
+
+  private final Integer port;
+  private final String baseURL;
   private final String jwtSecret;
 
   public Configuration() {
-    this.jwtSecret = requireEnvironmentVariable("BULETINA_JWT_SECRET");
+    this.port = Integer.parseInt(requireEnvironmentVariable("PORT"));
+    this.baseURL = requireEnvironmentVariable("BASE_URL");
+    this.jwtSecret = requireEnvironmentVariable("JWT_SECRET");
   }
 
-  public String getJwtSecret() {
-    return jwtSecret;
-  }
+  public Integer getPort() { return port; }
+  public String getBaseURL() { return baseURL; }
+  public String getJwtSecret() { return jwtSecret; }
 
   private static String requireEnvironmentVariable(final String key) {
-    final var value = System.getenv(key);
+    final var envKey = ENV_KEY_PREFIX + key;
+    final var value = System.getenv(envKey);
     if (Strings.isNullOrEmpty(value)) {
-      throw new RuntimeException("Environment variale '" + key + "' is required");
+      throw new RuntimeException("Environment variale '" + envKey + "' is required");
     }
     return value;
   }
