@@ -5,6 +5,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import io.javalin.http.Context;
 import me.sirikon.buletina.configuration.Configuration;
 import me.sirikon.buletina.services.Database;
+import me.sirikon.buletina.services.Mailer;
 import me.sirikon.buletina.services.Templates;
 import org.apache.commons.validator.routines.EmailValidator;
 
@@ -26,15 +27,18 @@ public class MainController {
   private final Configuration configuration;
   private final Templates templates;
   private final Database database;
+  private final Mailer mailer;
 
   @Inject
   public MainController(
       final Configuration configuration,
       final Templates templates,
-      final Database database) {
+      final Database database,
+      final Mailer mailer) {
     this.configuration = configuration;
     this.templates = templates;
     this.database = database;
+    this.mailer = mailer;
   }
 
   public void home(final Context ctx) { renderHome(ctx, "", ""); }
@@ -57,7 +61,13 @@ public class MainController {
     final var email = emailValidator.get();
     final var subscriptionToken = createSubscriptionToken(email);
     final var confirmationUrl = buildConfirmationUrl(subscriptionToken);
-    System.out.println(confirmationUrl);
+
+    mailer.sendEmail(
+        email,
+        "Confirm Subscription",
+        buildConfirmationEmailText(confirmationUrl),
+        buildConfirmationEmailHTML(confirmationUrl));
+
     renderVerificationEmailSent(ctx);
   }
 
@@ -101,6 +111,14 @@ public class MainController {
 
   private String buildConfirmationUrl(final String token) {
     return configuration.getBaseURL() + "/confirm_subscription/" + urlEncode(token);
+  }
+
+  private String buildConfirmationEmailHTML(final String confirmationUrl) {
+    return templates.render("email/confirmation.html", Map.of("confirmation_url", confirmationUrl));
+  }
+
+  private String buildConfirmationEmailText(final String confirmationUrl) {
+    return templates.render("email/confirmation.txt", Map.of("confirmation_url", confirmationUrl));
   }
 
   private static boolean isValidEmail(final String email) {

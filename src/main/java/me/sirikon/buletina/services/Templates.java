@@ -21,7 +21,9 @@ public class Templates {
   private static final List<String> AVAILABLE_TEMPLATES = List.of(
       "index.html",
       "verification_email_sent.html",
-      "subscription_confirmed.html"
+      "subscription_confirmed.html",
+      "email/confirmation.html",
+      "email/confirmation.txt"
   );
 
   private final Map<String, Mustache> templates;

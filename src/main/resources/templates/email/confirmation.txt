@@ -1,0 +1,8 @@
+Thanks for your interest in My Thing!
+
+To confirm your subscription, click on the following link:
+
+{{ confirmation_url }}
+
+If clicking on the link doesn't work, please copy and paste it in your
+browser's navigation bar.
