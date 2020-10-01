@@ -1,6 +1,7 @@
 package me.sirikon.buletina.configuration;
 
 import com.google.common.base.Strings;
+import me.sirikon.buletina.errors.InitializationError;
 
 import javax.inject.Singleton;
 
@@ -27,7 +28,7 @@ public class Configuration {
     final var envKey = ENV_KEY_PREFIX + key;
     final var value = System.getenv(envKey);
     if (Strings.isNullOrEmpty(value)) {
-      throw new RuntimeException("Environment variale '" + envKey + "' is required");
+      throw new InitializationError("Environment variale '" + envKey + "' is required");
     }
     return value;
   }

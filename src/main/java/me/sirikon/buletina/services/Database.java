@@ -1,5 +1,7 @@
 package me.sirikon.buletina.services;
 
+import me.sirikon.buletina.errors.InitializationError;
+
 import javax.inject.Singleton;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -11,16 +13,12 @@ public class Database {
   private final Connection connection;
 
   public Database() {
-    connection = createConnection();
-    ensureTable();
-  }
-
-  private Connection createConnection() {
     try {
-      return DriverManager.getConnection("jdbc:sqlite:data.db");
+      connection = DriverManager.getConnection("jdbc:sqlite:data.db");
     } catch (final SQLException t) {
-      throw new RuntimeException(t);
+      throw new InitializationError("Failed to initialize SQLite database connection", t);
     }
+    ensureTable();
   }
 
   private void ensureTable() {
