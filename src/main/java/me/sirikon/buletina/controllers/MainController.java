@@ -4,7 +4,8 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import io.javalin.http.Context;
 import me.sirikon.buletina.configuration.Configuration;
-import me.sirikon.buletina.services.TemplateService;
+import me.sirikon.buletina.services.Database;
+import me.sirikon.buletina.services.Templates;
 import org.apache.commons.validator.routines.EmailValidator;
 
 import javax.inject.Inject;
@@ -18,18 +19,22 @@ import java.util.Map;
 @Singleton
 public class MainController {
 
+  private static final String ALPHANUMERIC_CHARS = "abcdefghijklmnopqrstuvwxyz0123456789";
   private static final String JWT_ISSUER = "buletina";
   private static final String JWT_EMAIL_KEY = "email";
 
   private final Configuration configuration;
-  private final TemplateService templateService;
+  private final Templates templates;
+  private final Database database;
 
   @Inject
   public MainController(
       final Configuration configuration,
-      final TemplateService templateService) {
+      final Templates templates,
+      final Database database) {
     this.configuration = configuration;
-    this.templateService = templateService;
+    this.templates = templates;
+    this.database = database;
   }
 
   public void home(final Context ctx) { renderHome(ctx, "", ""); }
@@ -59,23 +64,23 @@ public class MainController {
   public void confirmSubscription(final Context ctx) {
     final var token = urlDecode(ctx.pathParam("token"));
     final var email = verifySubscriptionToken(token);
-    System.out.println(email);
+    database.insertSubscription(email, generateCancellationToken());
     renderSubscriptionConfirmed(ctx);
   }
 
   private void renderHome(final Context ctx, final String email, final String emailError) {
-    ctx.html(templateService.render("index.html", Map.of(
+    ctx.html(templates.render("index.html", Map.of(
         "email", email,
         "email_error", emailError
     )));
   }
 
   private void renderVerificationEmailSent(final Context ctx) {
-    ctx.html(templateService.render("verification_email_sent.html", null));
+    ctx.html(templates.render("verification_email_sent.html", null));
   }
 
   private void renderSubscriptionConfirmed(final Context ctx) {
-    ctx.html(templateService.render("subscription_confirmed.html", null));
+    ctx.html(templates.render("subscription_confirmed.html", null));
   }
 
   private String createSubscriptionToken(final String email) {
@@ -92,9 +97,7 @@ public class MainController {
         .getClaim(JWT_EMAIL_KEY).asString();
   }
 
-  private Algorithm getJWTAlgorithm() {
-    return Algorithm.HMAC512(configuration.getJwtSecret());
-  }
+  private Algorithm getJWTAlgorithm() { return Algorithm.HMAC512(configuration.getJwtSecret()); }
 
   private String buildConfirmationUrl(final String token) {
     return configuration.getBaseURL() + "/confirm_subscription/" + urlEncode(token);
@@ -118,6 +121,16 @@ public class MainController {
     } catch (final UnsupportedEncodingException e) {
       throw new RuntimeException(e);
     }
+  }
+
+  private static String generateCancellationToken() {
+    final var stringBuilder = new StringBuilder();
+    var count = 64;
+    while (count-- != 0) {
+      final var charPos = (int)Math.floor(Math.random()*ALPHANUMERIC_CHARS.length());
+      stringBuilder.append(ALPHANUMERIC_CHARS.charAt(charPos));
+    }
+    return stringBuilder.toString();
   }
 
 }

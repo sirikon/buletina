@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 @Singleton
-public class TemplateService {
+public class Templates {
 
   private static final List<String> AVAILABLE_TEMPLATES = List.of(
       "index.html",
@@ -27,7 +27,7 @@ public class TemplateService {
   private final Map<String, Mustache> templates;
 
   @Inject
-  public TemplateService() {
+  public Templates() {
     templates = new HashMap<>();
     final var mustacheFactory = new DefaultMustacheFactory();
     AVAILABLE_TEMPLATES.forEach((t) -> {
