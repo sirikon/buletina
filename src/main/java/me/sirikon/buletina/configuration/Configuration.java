@@ -40,7 +40,7 @@ public class Configuration {
     final var envKey = ENV_KEY_PREFIX + key;
     final var value = System.getenv(envKey);
     if (Strings.isNullOrEmpty(value)) {
-      throw new InitializationError("Environment variale '" + envKey + "' is required");
+      throw new InitializationError("Environment variable '" + envKey + "' is required");
     }
     return value;
   }
