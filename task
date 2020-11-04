@@ -11,6 +11,10 @@ function fatjar {(
   mvn clean package
 )}
 
+function version {(
+  mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec
+)}
+
 function help {(
   echo "Available commands:"
   for fn in $(compgen -A function); do echo "  ${fn}"; done
