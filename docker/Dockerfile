@@ -16,7 +16,7 @@ COPY src src
 COPY task .
 RUN bash -c '. $HOME/.asdf/asdf.sh && ./task fatjar'
 
-FROM adoptopenjdk:14-jre-hotspot AS final
+FROM adoptopenjdk/openjdk14:alpine-jre AS final
 WORKDIR /app
 COPY --from=build /app/target/buletina.fat.jar .
 CMD java -jar --enable-preview buletina.fat.jar
