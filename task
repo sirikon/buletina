@@ -15,6 +15,15 @@ function version {(
   mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec
 )}
 
+function docker-publish {(
+  version="$(version)_$(date +'%Y%m%d_%H%M%S')"
+  printf "Building container version: %s\n" "${version}"
+  cd docker
+  export BULETINA_TAG="${version}"
+  docker-compose build
+  docker-compose push
+)}
+
 function help {(
   echo "Available commands:"
   for fn in $(compgen -A function); do echo "  ${fn}"; done

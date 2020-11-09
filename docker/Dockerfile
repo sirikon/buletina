@@ -11,9 +11,9 @@ RUN ~/.asdf/bin/asdf plugin-add java https://github.com/halcyon/asdf-java.git &&
 COPY .tool-versions .
 RUN bash -c '. $HOME/.asdf/asdf.sh && asdf install'
 
+COPY task .
 COPY pom.xml .
 COPY src src
-COPY task .
 RUN bash -c '. $HOME/.asdf/asdf.sh && ./task fatjar'
 
 FROM adoptopenjdk/openjdk14:alpine-jre AS final

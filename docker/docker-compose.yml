@@ -1,8 +1,8 @@
-version: '2'
+version: '3.8'
 
 services:
   buletina:
-    image: 'buletina'
+    image: "sirikon/buletina:${BULETINA_TAG}"
     build:
       context: ../
       dockerfile: ./docker/Dockerfile
