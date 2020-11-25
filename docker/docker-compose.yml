@@ -1,6 +1,7 @@
 version: '3.8'
 
 services:
+
   buletina:
     image: "sirikon/buletina:${BULETINA_TAG}"
     build:

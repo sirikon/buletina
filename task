@@ -25,6 +25,10 @@ function docker-publish {(
   printf "Published version: %s\n" "${version}"
 )}
 
+function devenv {(
+  docker-compose -p buletina-devenv -f ./docker/docker-compose.devenv.yml "$@"
+)}
+
 function help {(
   echo "Available commands:"
   for fn in $(compgen -A function); do echo "  ${fn}"; done

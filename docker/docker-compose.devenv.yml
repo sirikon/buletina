@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+
+  db:
+    image: postgres:13-alpine
+    restart: always
+    environment:
+      POSTGRES_USER: buletina
+      POSTGRES_PASSWORD: buletina
+      POSTGRES_DB: buletina
+    ports:
+    - 5432:5432
