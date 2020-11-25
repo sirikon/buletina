@@ -44,6 +44,7 @@ public class Buletina {
             try { start(); } catch (final ProvisionException err) { throw err.getCause(); }
         } catch (final InitializationError err) {
             System.err.println(err.getMessage());
+            err.getCause().printStackTrace();
             System.exit(1);
         } catch (final Throwable t) {
             System.err.println(t.getMessage());

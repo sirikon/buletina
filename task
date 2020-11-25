@@ -4,6 +4,13 @@ set -e
 cd "$(dirname "${BASH_SOURCE[0]}")"
 
 function run {(
+  export BULETINA_PORT=8080
+  export BULETINA_BASE_URL=http://127.0.0.1:8080
+  export BULETINA_JWT_SECRET=some_random_string
+  export BULETINA_SMTP_SERVER=mail.server.com
+  export BULETINA_SMTP_USERNAME=user
+  export BULETINA_SMTP_PASSWORD=pass
+  export BULETINA_SMTP_SENDER=noreply@example.com
   mvn clean compile exec:java
 )}
 
@@ -12,6 +19,7 @@ function fatjar {(
 )}
 
 function version {(
+  # shellcheck disable=SC2016
   mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec
 )}
 
@@ -27,6 +35,10 @@ function docker-publish {(
 
 function devenv {(
   docker-compose -p buletina-devenv -f ./docker/docker-compose.devenv.yml "$@"
+)}
+
+function devenv-db-login {(
+  devenv exec db psql -U buletina
 )}
 
 function help {(

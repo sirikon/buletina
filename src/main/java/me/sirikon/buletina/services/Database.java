@@ -13,21 +13,35 @@ public class Database {
   private final Connection connection;
 
   public Database() {
-    try {
-      connection = DriverManager.getConnection("jdbc:sqlite:data.db");
-    } catch (final SQLException t) {
-      throw new InitializationError("Failed to initialize SQLite database connection", t);
-    }
+    registerPostgreSQLDriver();
+    connection = connect();
     ensureTable();
+  }
+
+  private void registerPostgreSQLDriver() {
+    try {
+      Class.forName("org.postgresql.Driver");
+    } catch (final ClassNotFoundException t) {
+      throw new InitializationError("Failed to initialize PostgreSQL Driver", t);
+    }
+  }
+
+  private Connection connect() {
+    try {
+      return DriverManager.getConnection("jdbc:postgresql://127.0.0.1:5432/buletina?user=buletina&password=buletina");
+    } catch (final SQLException t) {
+      throw new InitializationError("Failed to initialize PostgreSQL database connection", t);
+    }
   }
 
   private void ensureTable() {
     try {
       connection.prepareStatement("""
             CREATE TABLE IF NOT EXISTS subscriptions (
-            	id INTEGER PRIMARY KEY AUTOINCREMENT,
-            	email VARCHAR(320) NOT NULL UNIQUE,
-            	cancellation_token VARCHAR(64) NOT NULL
+              id SERIAL,
+              email VARCHAR(320) NOT NULL UNIQUE,
+              cancellation_token VARCHAR(64) NOT NULL,
+              PRIMARY KEY (id)
             );
           """).execute();
     } catch (final SQLException t) {
