@@ -11,6 +11,10 @@ function run {(
   export BULETINA_SMTP_USERNAME=user
   export BULETINA_SMTP_PASSWORD=pass
   export BULETINA_SMTP_SENDER=noreply@example.com
+  # shellcheck disable=SC2046
+  # shellcheck disable=SC2002
+  export $(cat .env | xargs)
+  
   mvn clean compile exec:java
 )}
 
