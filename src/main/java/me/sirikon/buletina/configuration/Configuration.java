@@ -13,6 +13,7 @@ public class Configuration {
   private final Integer port;
   private final String baseURL;
   private final String jwtSecret;
+  private final String databaseUrl;
   private final String smtpServer;
   private final String smtpSender;
   private final String smtpUsername;
@@ -22,6 +23,7 @@ public class Configuration {
     this.port = Integer.parseInt(requireEnvironmentVariable("PORT"));
     this.baseURL = requireEnvironmentVariable("BASE_URL");
     this.jwtSecret = requireEnvironmentVariable("JWT_SECRET");
+    this.databaseUrl = requireEnvironmentVariable("DATABASE_URL");
     this.smtpServer = requireEnvironmentVariable("SMTP_SERVER");
     this.smtpSender = requireEnvironmentVariable("SMTP_SENDER");
     this.smtpUsername = requireEnvironmentVariable("SMTP_USERNAME");
@@ -31,6 +33,7 @@ public class Configuration {
   public Integer getPort() { return port; }
   public String getBaseURL() { return baseURL; }
   public String getJwtSecret() { return jwtSecret; }
+  public String getDatabaseUrl() { return databaseUrl; }
   public String getSmtpServer() { return smtpServer; }
   public String getSmtpSender() { return smtpSender; }
   public String getSmtpUsername() { return smtpUsername; }

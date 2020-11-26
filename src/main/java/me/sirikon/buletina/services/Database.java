@@ -1,7 +1,9 @@
 package me.sirikon.buletina.services;
 
+import me.sirikon.buletina.configuration.Configuration;
 import me.sirikon.buletina.errors.InitializationError;
 
+import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -10,9 +12,13 @@ import java.sql.SQLException;
 @Singleton
 public class Database {
 
+  private final Configuration configuration;
   private final Connection connection;
 
-  public Database() {
+  @Inject
+  public Database(final Configuration configuration) {
+    this.configuration = configuration;
+
     registerPostgreSQLDriver();
     connection = connect();
     ensureTable();
@@ -28,7 +34,7 @@ public class Database {
 
   private Connection connect() {
     try {
-      return DriverManager.getConnection("jdbc:postgresql://127.0.0.1:5432/buletina?user=buletina&password=buletina");
+      return DriverManager.getConnection(configuration.getDatabaseUrl());
     } catch (final SQLException t) {
       throw new InitializationError("Failed to initialize PostgreSQL database connection", t);
     }
