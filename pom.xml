@@ -6,7 +6,7 @@
 
     <groupId>me.sirikon</groupId>
     <artifactId>buletina</artifactId>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
 
     <properties>
         <exec.mainClass>me.sirikon.buletina.Buletina</exec.mainClass>

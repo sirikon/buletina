@@ -4,6 +4,7 @@ import com.google.common.base.Strings;
 import me.sirikon.buletina.errors.InitializationError;
 
 import javax.inject.Singleton;
+import java.util.Optional;
 
 @Singleton
 public class Configuration {
@@ -18,6 +19,7 @@ public class Configuration {
   private final String smtpSender;
   private final String smtpUsername;
   private final String smtpPassword;
+  private final boolean debugTemplates;
 
   public Configuration() {
     this.port = Integer.parseInt(requireEnvironmentVariable("PORT"));
@@ -28,6 +30,7 @@ public class Configuration {
     this.smtpSender = requireEnvironmentVariable("SMTP_SENDER");
     this.smtpUsername = requireEnvironmentVariable("SMTP_USERNAME");
     this.smtpPassword = requireEnvironmentVariable("SMTP_PASSWORD");
+    this.debugTemplates = getEnvironmentVariable("DEBUG_TEMPLATES", "false").equals("true");
   }
 
   public Integer getPort() { return port; }
@@ -38,14 +41,28 @@ public class Configuration {
   public String getSmtpSender() { return smtpSender; }
   public String getSmtpUsername() { return smtpUsername; }
   public String getSmtpPassword() { return smtpPassword; }
+  public boolean getDebugTemplates() { return debugTemplates; }
+
+
+
+  private static Optional<String> getEnvironmentVariable(final String key) {
+    final var value = System.getenv(buildEnvKey(key));
+    return Strings.isNullOrEmpty(value)
+        ? Optional.empty()
+        : Optional.of(value);
+  }
+
+  private static String getEnvironmentVariable(final String key, final String defaultValue) {
+    return getEnvironmentVariable(key).orElse(defaultValue);
+  }
 
   private static String requireEnvironmentVariable(final String key) {
-    final var envKey = ENV_KEY_PREFIX + key;
-    final var value = System.getenv(envKey);
-    if (Strings.isNullOrEmpty(value)) {
-      throw new InitializationError("Environment variable '" + envKey + "' is required");
-    }
-    return value;
+    return getEnvironmentVariable(key)
+        .orElseThrow(() -> new InitializationError("Environment variable '" + buildEnvKey(key) + "' is required"));
+  }
+
+  private static String buildEnvKey(final String key) {
+    return ENV_KEY_PREFIX + key;
   }
 
 }
