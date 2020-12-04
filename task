@@ -8,19 +8,26 @@ function run {(
   export BULETINA_BASE_URL=http://127.0.0.1:8080
   export BULETINA_JWT_SECRET=some_random_string
   export BULETINA_DATABASE_URL="jdbc:postgresql://127.0.0.1:5432/buletina?user=buletina&password=buletina"
-  export BULETINA_SMTP_SERVER=mail.server.com
+  export BULETINA_SMTP_SERVER=127.0.0.1
+  export BULETINA_SMTP_PORT=5025
   export BULETINA_SMTP_USERNAME=user
   export BULETINA_SMTP_PASSWORD=pass
   export BULETINA_SMTP_SENDER=noreply@example.com
-  # shellcheck disable=SC2046
-  # shellcheck disable=SC2002
-  export $(cat .env | xargs)
+  export BULETINA_DEBUG_TEMPLATES=true
+  if [ -f ".env" ]; then
+    # shellcheck disable=SC2046
+    # shellcheck disable=SC2002
+    export $(cat .env | xargs)
+  fi
   
-  mvn clean compile exec:java
+  cd ./testing-folder/${1:-vanilla}
+  mvn -f ../../ clean compile exec:java
 )}
 
-function e2e-tests {(
-  cd "./e2e-tests"
+function integration-tests {(
+  export BULETINA_BASE_URL=http://127.0.0.1:8080
+  export SMTP_BASE_URL=http://127.0.0.1:8081
+  cd "./integration-tests"
   npm -s test
 )}
 

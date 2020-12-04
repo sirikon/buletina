@@ -1,0 +1,2 @@
+body[confirmation_txt]
+confirmation_url[{{ confirmation_url }}]

@@ -16,6 +16,7 @@ public class Configuration {
   private final String jwtSecret;
   private final String databaseUrl;
   private final String smtpServer;
+  private final Integer smtpPort;
   private final String smtpSender;
   private final String smtpUsername;
   private final String smtpPassword;
@@ -27,6 +28,7 @@ public class Configuration {
     this.jwtSecret = requireEnvironmentVariable("JWT_SECRET");
     this.databaseUrl = requireEnvironmentVariable("DATABASE_URL");
     this.smtpServer = requireEnvironmentVariable("SMTP_SERVER");
+    this.smtpPort = Integer.parseInt(getEnvironmentVariable("SMTP_PORT", "25"));
     this.smtpSender = requireEnvironmentVariable("SMTP_SENDER");
     this.smtpUsername = requireEnvironmentVariable("SMTP_USERNAME");
     this.smtpPassword = requireEnvironmentVariable("SMTP_PASSWORD");
@@ -38,12 +40,11 @@ public class Configuration {
   public String getJwtSecret() { return jwtSecret; }
   public String getDatabaseUrl() { return databaseUrl; }
   public String getSmtpServer() { return smtpServer; }
+  public Integer getSmtpPort() { return smtpPort; }
   public String getSmtpSender() { return smtpSender; }
   public String getSmtpUsername() { return smtpUsername; }
   public String getSmtpPassword() { return smtpPassword; }
   public boolean getDebugTemplates() { return debugTemplates; }
-
-
 
   private static Optional<String> getEnvironmentVariable(final String key) {
     final var value = System.getenv(buildEnvKey(key));

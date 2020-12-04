@@ -31,6 +31,7 @@ public class Mailer {
     properties.put("mail.transport.protocol", "smtp");
     properties.put("mail.smtp.auth", "true");
     properties.put("mail.smtp.host", configuration.getSmtpServer());
+    properties.put("mail.smtp.port", configuration.getSmtpPort());
 
     final var session = Session.getDefaultInstance(properties, new Authenticator() {
       @Override
