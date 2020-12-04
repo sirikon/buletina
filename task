@@ -19,6 +19,11 @@ function run {(
   mvn clean compile exec:java
 )}
 
+function e2e-tests {(
+  cd "./e2e-tests"
+  npm -s test
+)}
+
 function fatjar {(
   mvn clean package
 )}
