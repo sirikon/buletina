@@ -6,7 +6,7 @@ function requireEnvironmentVariable(key) {
     return value;
 }
 
-module.exports = {
+export default {
     buletinaBaseUrl: requireEnvironmentVariable('BULETINA_BASE_URL'),
     smtpBaseUrl: requireEnvironmentVariable('SMTP_BASE_URL'),
 }

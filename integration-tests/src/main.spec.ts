@@ -1,12 +1,10 @@
-const chai = require('chai')
-const chaiHttp = require('chai-http')
-chai.use(chaiHttp)
+import { expect, request, use } from 'chai'
+import chaiHttp from 'chai-http'
 
-const expect = chai.expect
-const request = chai.request
+import config from './utils/config'
+import smtp from './utils/smtp'
 
-const config = require('./utils/config')
-const smtp = require('./utils/smtp')
+use(chaiHttp)
 
 const buletinaRequest = () => request(config.buletinaBaseUrl);
 

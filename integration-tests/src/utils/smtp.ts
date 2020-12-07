@@ -1,12 +1,12 @@
-const config = require('./config')
-const superagent = require('superagent');
+import config from './config'
+import superagent from 'superagent'
 
-async function getEmails() {
+async function getEmails(): Promise<Array<any>> {
     const res = await superagent.get(config.smtpBaseUrl + '/api/email');
     return res.body;
 }
 
-async function deleteEmail(id) {
+async function deleteEmail(id: String) {
     await superagent.delete(`${config.smtpBaseUrl}/api/email/${id}`);
 }
 
@@ -17,7 +17,7 @@ async function deleteAllEmails() {
     }
 }
 
-async function verifyEmail(address) {
+async function verifyEmail(address: String) {
     const emails = await getEmails();
     const filteredEmails = emails.filter((email) => email.toAddress === address);
     if (filteredEmails.length === 0) {
@@ -35,7 +35,7 @@ async function verifyNoMoreEmails() {
     }
 }
 
-module.exports = {
+export default {
     getEmails,
     deleteEmail,
     deleteAllEmails,
