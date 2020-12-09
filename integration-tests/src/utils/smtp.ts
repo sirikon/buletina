@@ -17,7 +17,7 @@ async function deleteAllEmails() {
     }
 }
 
-async function verifyEmail(address: String) {
+async function expectEmail(address: String) {
     const emails = await getEmails();
     const filteredEmails = emails.filter((email) => email.toAddress === address);
     if (filteredEmails.length === 0) {
@@ -28,7 +28,7 @@ async function verifyEmail(address: String) {
     return selectedEmail;
 }
 
-async function verifyNoMoreEmails() {
+async function expectNoMoreEmails() {
     const emails = await getEmails();
     if (emails.length > 0) {
         throw new Error(`Expected no more emails, but there are ${emails.length} more`);
@@ -39,6 +39,6 @@ export default {
     getEmails,
     deleteEmail,
     deleteAllEmails,
-    verifyEmail,
-    verifyNoMoreEmails
+    expectEmail,
+    expectNoMoreEmails
 }
