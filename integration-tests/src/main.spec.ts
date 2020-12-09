@@ -4,17 +4,6 @@ import superagent from 'superagent'
 import config from './utils/config'
 import smtp from './utils/smtp'
 
-const buletinaRequest = (method: 'GET' | 'POST', path: string) => 
-    superagent(method, `${config.buletinaBaseUrl}${path}`);
-
-const extractConfirmationUrlFromEmail = (emailData) =>
-    /confirmation_url\[(.+)\]/.exec(emailData)[1]
-
-const expectResponse = (res: superagent.Response, status: number, contentType: string) => {
-    expect(res.status).to.equal(status)
-    expect(res.type).to.equal(contentType)
-}
-
 describe('Main behavior', () => {
     beforeEach(async () => await smtp.deleteAllEmails())
     afterEach(async () => await smtp.expectNoMoreEmails())
@@ -62,3 +51,14 @@ describe('Main behavior', () => {
         expect(confirmationRes.text).to.contain('body[subscription_confirmed]')
     })
 })
+
+const buletinaRequest = (method: 'GET' | 'POST', path: string) => 
+    superagent(method, `${config.buletinaBaseUrl}${path}`);
+
+const extractConfirmationUrlFromEmail = (emailData) =>
+    /confirmation_url\[(.+)\]/.exec(emailData)[1]
+
+const expectResponse = (res: superagent.Response, status: number, contentType: string) => {
+    expect(res.status).to.equal(status)
+    expect(res.type).to.equal(contentType)
+}
